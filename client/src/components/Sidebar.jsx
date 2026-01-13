@@ -7,7 +7,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
 
   return (
     <div
-      className={`h-full p-5 rounded-r-xl overflow-y-auto text-white bg-zinc-50/20 ${
+      className={`h-full p-5  overflow-y-auto text-white bg-zinc-50/20 ${
         selectedUser ? "max-md:hidden" : ""
       }`}
     >
