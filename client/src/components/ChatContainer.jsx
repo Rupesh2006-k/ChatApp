@@ -47,9 +47,10 @@ const ChatContainer = ({ setSelectedUser, selectedUser }) => {
         {messagesDummyData.map((msg, index) => (
           <div
             key={index}
-            className={`flex items-end gap-2 justify-between ${
-              msg.senderId !== "680f50e4f10f3cd28382ecf9" &&
-              "flex-row-reverse justify-start"
+            className={`flex items-end gap-2 ${
+              msg.senderId === "680f50e4f10f3cd28382ecf9"
+                ? "justify-end"
+                : "justify-start"
             }`}
           >
             {msg.image ? (
