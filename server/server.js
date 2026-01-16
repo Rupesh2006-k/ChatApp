@@ -65,7 +65,6 @@ io.on("connection", (socket) => {
 // Parse incoming JSON requests
 app.use(express.json({ limit: "10mb" }));
 
-
 // Enable CORS for REST APIs
 app.use(cors());
 
@@ -80,10 +79,10 @@ app.use("/api/messages", messageRoute);
 
 // ---------------- SERVER START ----------------
 
-// Define port
-const PORT = process.env.PORT || 3000;
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 3000;
 
-// Start server
-server.listen(PORT, () => {
-  console.log("Server is running on port:", PORT);
-});
+  server.listen(PORT, () => {
+    console.log("Server is running on port:", PORT);
+  });
+}
