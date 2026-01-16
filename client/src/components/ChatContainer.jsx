@@ -1,5 +1,5 @@
-import React, { use, useContext, useEffect, useRef, useState } from "react";
-import assets, { messagesDummyData } from "../assets/images/assets";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import assets from "../assets/images/assets";
 import { formatMessageTime } from "../libs/utils";
 import { ChatContext } from "../context/ChatContext";
 import toast from "react-hot-toast";
