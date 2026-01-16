@@ -15,7 +15,7 @@ const ProfilePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedImage) {
-      await axios.put("http://localhost:3000/api/auth/update-profile", {
+      await axios.put("https://chatapp-backend-pbsz.onrender.com/api/auth/update-profile", {
         fullName: name,
         bio,
       });
@@ -29,7 +29,7 @@ const ProfilePage = () => {
     render.readAsDataURL(selectedImage);
     render.onload = async () => {
       const base64Image = render.result;
-      await axios.put("http://localhost:3000/api/auth/update-profile", {
+      await axios.put("https://chatapp-backend-pbsz.onrender.com/api/auth/update-profile", {
         profilePic: base64Image,
         fullName: name,
         bio,
