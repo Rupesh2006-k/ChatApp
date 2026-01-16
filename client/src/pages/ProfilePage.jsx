@@ -1,25 +1,51 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import assets from "../assets/images/assets";
 import { useNavigate } from "react-router-dom";
-
+import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
+import toast from "react-hot-toast";
 const ProfilePage = () => {
+  const { authUser } = useContext(AuthContext);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [name, setName] = useState("Martin Johnson");
-  const [bio, setBio] = useState("Hi everyone, I am using QuickChat");
+  const [name, setName] = useState(authUser.fullName);
+  const [bio, setBio] = useState(authUser.bio);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/");
+    if (!selectedImage) {
+      await axios.put("http://localhost:3000/api/auth/update-profile", {
+        fullName: name,
+        bio,
+      });
+      navigate("/");
+
+       toast.success("profile updated successfuly ");
+      return;
+    }
+
+    const render = new FileReader();
+    render.readAsDataURL(selectedImage);
+    render.onload = async () => {
+      const base64Image = render.result;
+      await axios.put("http://localhost:3000/api/auth/update-profile", {
+        profilePic: base64Image,
+        fullName: name,
+        bio,
+      });
+         toast.success("profile updated successfully");
+      navigate("/");
+    };
   };
 
   return (
     <div className="min-h-screen bg-cover bg-no-repeat flex items-center justify-center">
-      <div
-        className="w-5/6 max-w-2xl backdrop-blur-2xl text-gray-300 border-2 border-gray-600 flex items-center justify-between max-sm:flex-col-reverse rounded-lg"
-      >
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5 p-10 flex-1">
+      <div className="w-5/6 max-w-2xl backdrop-blur-2xl text-gray-300 border-2 border-gray-600 flex items-center justify-between max-sm:flex-col-reverse rounded-lg">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-5 p-10 flex-1"
+        >
           <h3 className="text-lg">Profile Details</h3>
 
           <label
@@ -29,6 +55,7 @@ const ProfilePage = () => {
             <input
               id="avatar"
               type="file"
+              name="profilePic"
               hidden
               onChange={(e) => setSelectedImage(e.target.files[0])}
             />
@@ -38,9 +65,7 @@ const ProfilePage = () => {
                   ? URL.createObjectURL(selectedImage)
                   : assets.avatar_icon
               }
-              className={`w-12 h-12 ${
-                selectedImage ? "rounded-full" : ""
-              }`}
+              className={`w-12 h-12 ${selectedImage && "rounded-full"}`}
               alt="avatar"
             />
             Upload profile image
@@ -59,7 +84,6 @@ const ProfilePage = () => {
             rows={4}
             placeholder="Write profile bio"
             required
-            
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             className="p-2 resize-none border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
@@ -74,8 +98,10 @@ const ProfilePage = () => {
         </form>
 
         <img
-          src={assets.logo_icon}
-          className="max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10"
+          src={authUser?.profilePic || assets.logo_icon}
+          className={`max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10 ${
+            selectedImage && "rounded-full"
+          }`}
           alt="logo"
         />
       </div>

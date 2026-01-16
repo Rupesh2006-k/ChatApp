@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import assets from "../assets/images/assets";
+import { AuthContext } from "../context/AuthContext";
 const LoginPage = () => {
-  
+  const { login } = useContext(AuthContext);
   const [currentState, setCurrentState] = useState("Sign Up");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ const LoginPage = () => {
       setIsDataSubmit(true);
       return;
     }
-
+    login(currentState === "Sign Up" ? "signup" : "login" ,{fullName , email , password,bio});
     console.log(fullName, email, password, bio);
 
     setFullName("");
@@ -102,7 +103,7 @@ const LoginPage = () => {
         </button>
 
         <div className="flex items-center gap-2 text-sm text-gray-500">
-          <input type="checkbox" required />
+          <input type="checkbox" />
           <p>Agree to the terms of use & privacy policy.</p>
         </div>
 

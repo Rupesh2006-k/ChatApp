@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import assets, { userDummyData } from "../assets/images/assets";
-
+import { AuthContext } from "../context/AuthContext";
 const Sidebar = ({ selectedUser, setSelectedUser }) => {
   const navigate = useNavigate();
-
+ let {logout} = useContext(AuthContext)
   return (
     <div
       className={`h-full p-5  overflow-y-auto text-white bg-zinc-50/20 ${
@@ -32,7 +32,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
 
               <hr className="my-2 border-zinc-500" />
 
-              <p className="cursor-pointer text-sm hover:text-red-400">
+              <p onClick={()=>logout()} className="cursor-pointer text-sm hover:text-red-400">
                 Logout
               </p>
             </div>
